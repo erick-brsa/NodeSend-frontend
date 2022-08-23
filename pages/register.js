@@ -1,35 +1,39 @@
-import Layout from "../components/Layout"
+import Layout from '../components/Layout'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
-const LoginPage = () => {
+const RegisterPage = () => {
 
-	// Formulario y validación con formik y yup
+    // Formulario y validación con formik y yup
     const formik = useFormik({
         initialValues: {
+            name: '',
             email: '',
             password: ''
         },
         validationSchema: Yup.object({
+            name: Yup.string()
+                    .required('El nombre es obligatorio'),
             email: Yup.string().
                     email('El email no es válido')
                     .required('El email es obligatorio'),
             password: Yup.string()
                     .required('La contraseña es obligatoria')
+                    .min(6, 'La contraseña debe contener al menos 6 caracteres')
         }),
         onSubmit: (values) => {
 
         }
     })
-	
-	return (
-		<Layout
-			title="NodeSend - Login"
-			description="NodeSend - Login"
-		>
-			<div className="md:w-4/5 xl:w-3/5 mx-auto mb-32">
+    
+    return (
+        <Layout
+            title="NodeSend - Registro"
+            description="NodeSend - Registro"
+        >
+            <div className="md:w-4/5 xl:w-3/5 mx-auto mb-32">
                 <h2 className="text-4xl font-sans font-bold text-gray-800 text-center my-4">
-                    Iniciar Sesión
+                    Crear Cuenta
                 </h2>
                 <div className="flex justify-center mt-5">
                     <div className="w-full max-w-lg">
@@ -38,6 +42,25 @@ const LoginPage = () => {
                             onSubmit={formik.handleSubmit}
                         >
                             <div className="w-full max-w-lg">
+                                <div className="mb-4">
+                                    <label htmlFor="name" className="text-black block text-sm font-bold mb-2">
+                                        Nombre
+                                    </label>
+                                    <input 
+                                        id="name" 
+                                        type="text" 
+                                        placeholder="Nombre de Usuario"
+                                        className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-1 focus:outline-slate-300"
+                                        value={formik.values.name}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                    />
+                                    {formik.touched.name && formik.errors.name && (
+                                        <div className="my-2 bg-gray-200 border-l-4 border-red-500 text-red-700 p-4">
+                                            <p className="font-bold">{formik.errors.name}</p>
+                                        </div>
+                                    )}
+                                </div>
                                 <div className="mb-4">
                                     <label htmlFor="email" className="text-black block text-sm font-bold mb-2">
                                         Correo Electrónico
@@ -79,15 +102,15 @@ const LoginPage = () => {
                             </div>
                             <input 
                                 type="submit"
-                                value="Iniciar Sesión"
+                                value="Crear Cuenta"
                                 className="bg-red-600 hover:bg-gray-900 transition-colors w-full p-2 text-white uppercase font-semibold "
                             />
                         </form>
                     </div>
                 </div>
             </div>
-		</Layout>
-	  )
+        </Layout>
+    )
 }
 
-export default LoginPage
+export default RegisterPage
