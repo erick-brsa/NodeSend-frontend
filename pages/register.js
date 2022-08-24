@@ -1,8 +1,13 @@
-import Layout from '../components/Layout'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
+import Layout from '../components/Layout'
+import Alert from '../components/Alert'
+import useAuth from '../hooks/useAuth'
+
 const RegisterPage = () => {
+
+    const { registerUser, message } = useAuth()
 
     // Formulario y validación con formik y yup
     const formik = useFormik({
@@ -22,7 +27,7 @@ const RegisterPage = () => {
                     .min(6, 'La contraseña debe contener al menos 6 caracteres')
         }),
         onSubmit: (values) => {
-
+            registerUser(values)
         }
     })
     
@@ -35,6 +40,7 @@ const RegisterPage = () => {
                 <h2 className="text-4xl font-sans font-bold text-gray-800 text-center my-4">
                     Crear Cuenta
                 </h2>
+                {message && <Alert />}
                 <div className="flex justify-center mt-5">
                     <div className="w-full max-w-lg">
                         <form 
