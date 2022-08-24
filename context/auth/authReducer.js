@@ -2,17 +2,43 @@ import {
     USER_AUTHENTICADED, 
     SUCCESSFUL_REGISTRATION, 
     ERROR_REGISTRATION,
-    CLEAR_ALERT
+    LOGIN_ERROR,
+    LOGIN_SUCCESS,
+    CLEAR_ALERT,
+    SIGN_OUT
 } from '../../types'
 
 const authReducer = (state, action) => {
     switch (action.type) {
         case SUCCESSFUL_REGISTRATION:
         case ERROR_REGISTRATION:
+        case ERROR_REGISTRATION:
+        case LOGIN_ERROR:
             return {
                 ...state,
                 message: action.payload
             } 
+        case LOGIN_SUCCESS:
+            localStorage.setItem('token', action.payload)
+            return {
+                ...state,
+                token: action.payload,
+                authenticated: true
+            }
+        case USER_AUTHENTICADED: 
+            return {
+                ...state,
+                user: action.payload,
+                authenticated: true
+            } 
+        case SIGN_OUT: 
+            localStorage.removeItem('token')
+            return {
+                ...state,
+                token: null,
+                user: null,
+                authenticated: null
+            }
         case CLEAR_ALERT:
             return {
                 ...state,

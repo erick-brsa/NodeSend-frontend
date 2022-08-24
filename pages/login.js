@@ -1,8 +1,22 @@
-import Layout from "../components/Layout"
+import { useEffect } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
+import Layout from "../components/Layout"
+import Alert from '../components/Alert'
+import useAuth from '../hooks/useAuth'
+import { useRouter } from 'next/router'
+
 const LoginPage = () => {
+
+    const { authenticateUser, message, authenticated } = useAuth()
+    const router = useRouter()
+
+    useEffect(() => {
+        if (authenticated) {
+            router.push('/')
+        }
+    }, [authenticated, router])
 
 	// Formulario y validación con formik y yup
     const formik = useFormik({
@@ -18,7 +32,7 @@ const LoginPage = () => {
                     .required('La contraseña es obligatoria')
         }),
         onSubmit: (values) => {
-
+            authenticateUser(values)
         }
     })
 	
@@ -31,6 +45,7 @@ const LoginPage = () => {
                 <h2 className="text-4xl font-sans font-bold text-gray-800 text-center my-4">
                     Iniciar Sesión
                 </h2>
+                {message && <Alert />}
                 <div className="flex justify-center mt-5">
                     <div className="w-full max-w-lg">
                         <form 

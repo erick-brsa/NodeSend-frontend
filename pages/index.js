@@ -1,6 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from "react"
 import Layout from "../components/Layout"
+import useAuth from "../hooks/useAuth"
 
 const IndexPage = () => {
+
+	const { userAuthenticated } = useAuth()
+
+	useEffect(() => {
+		userAuthenticated()
+	}, [])
+
 	return (
 		<Layout
 			title="NodeSend"

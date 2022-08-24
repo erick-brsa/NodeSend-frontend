@@ -6,17 +6,21 @@ import {
     USER_AUTHENTICADED, 
     SUCCESSFUL_REGISTRATION,
     ERROR_REGISTRATION,
-    CLEAR_ALERT
+    CLEAR_ALERT,
+    LOGIN_SUCCESS,
+    LOGIN_ERROR,
+    SIGN_OUT
 } from '../../types'
 
 import axios from '../../config/axios'
+import tokenAuth from '../../config/tokenAuth'
 
 const AuthProvider = ({ children }) => {
     
     // Definir un state inicial
     const initialState = {
-        token: 'ESTE ES MI TOKEN',
-        authenticated: null,
+        token: typeof window !== 'undefined' ? localStorage.getItem('token') : '',
+        authenticated: false,
         user: null,
         message: null
     }
@@ -25,11 +29,23 @@ const AuthProvider = ({ children }) => {
     const [ state, dispatch ] = useReducer(authReducer, initialState)
 
     // Usuario autenticado
-    const userAuthenticated = (name) => {
-        dispatch({
-            type: USER_AUTHENTICADED,
-            payload: name
-        })
+    const userAuthenticated = async () => {
+        const token = localStorage.getItem('token')
+
+        if (token) {
+            tokenAuth(token)
+        }
+
+        try {
+            const { data } = await axios('/auth')
+            console.log(data.user);
+            dispatch({
+                type: USER_AUTHENTICADED,
+                payload: data.user
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     // Registrar nuevos usuarios
@@ -53,6 +69,32 @@ const AuthProvider = ({ children }) => {
         }, 3000)
     }
 
+    const authenticateUser = async (user) => {
+        try {
+            const { data } = await axios.post('/auth', user)
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: data.token
+            })
+        } catch (error) {
+            dispatch({
+                type: LOGIN_ERROR,
+                payload: error.response.data.message
+            })
+        }
+        setTimeout(() => {
+            dispatch({
+                type: CLEAR_ALERT
+            })
+        }, 3000)
+    }
+
+    const signout = () => {
+        dispatch({
+            type: SIGN_OUT
+        })
+    }
+
     return (
         <authContext.Provider
             value={{
@@ -62,6 +104,8 @@ const AuthProvider = ({ children }) => {
                 message: state.message,
                 userAuthenticated,
                 registerUser,
+                authenticateUser,
+                signout
             }}
         >
             {children}
