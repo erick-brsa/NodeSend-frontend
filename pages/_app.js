@@ -1,10 +1,13 @@
-import '../styles/globals.css'
 import AuthProvider from '../context/auth/authProvider'
+import AppProvider from '../context/app/appProvider'
+import '../styles/globals.css'
 
-function MyApp({ Component, pageProps }) {
+const MyApp = ({ Component, pageProps }) => {
 	return (
 		<AuthProvider>
-			<Component {...pageProps} />
+			<AppProvider>
+				<Component {...pageProps} />
+			</AppProvider>
 		</AuthProvider>
 	)
 }

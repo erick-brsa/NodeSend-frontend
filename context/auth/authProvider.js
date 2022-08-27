@@ -38,7 +38,6 @@ const AuthProvider = ({ children }) => {
 
         try {
             const { data } = await axios('/auth')
-            console.log(data.user);
             dispatch({
                 type: USER_AUTHENTICADED,
                 payload: data.user
