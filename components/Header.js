@@ -1,20 +1,30 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link"
+import { useRouter } from "next/router"
+
 import useAuth from "../hooks/useAuth"
+import useApplication from "../hooks/useApplication"
 
 const Header = () => {
 
     const { user, signout } = useAuth()
+    const { restart_app } = useApplication()
+
+    const router = useRouter()
+
+    const redirect = () => {
+        router.push('/')
+        restart_app()
+    }
 
     return (
         <header className="py-8 flex flex-col md:flex-row items-center justify-between">
-            <Link href="/">
-                <img
-                    src="/logo.svg"
-                    alt="NodeSend Logo"
-                    className="w-64 mb-8 md:mb-0"
-                />
-            </Link>
+            <img
+                onClick={redirect}
+                src="/logo.svg"
+                alt="NodeSend Logo"
+                className="w-64 mb-8 md:mb-0 cursor-pointer"
+            />
             {user ? (
                 <div className="flex gap-5 items-center">
                     <p className="font-bold text-lg">¡Hola, {user.name}!</p>

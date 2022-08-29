@@ -1,4 +1,5 @@
 import {
+    CLEAR_STATE,
     UPLOAD_FILE,
     UPLOAD_FILE_SUCCESS,
     UPLOAD_FILE_ERROR,
@@ -10,6 +11,18 @@ import {
 
 const appReducer = (state, action) => {
     switch(action.type) {
+        case CLEAR_STATE:
+            return {
+                ...state,
+                message_file: null,
+                name: '',
+                original_name: '',
+                loading: false,
+                downloads: 1,
+                password: '',
+                author: null,
+                url: ''
+            }
         case UPLOAD_FILE:
             return {
                 ...state,
@@ -35,7 +48,8 @@ const appReducer = (state, action) => {
             }
         case CREATE_LINK_ERROR: {
             return {
-                ...state
+                ...state,
+                message_file: action.payload
             }
         }
         case SHOW_ALERT:

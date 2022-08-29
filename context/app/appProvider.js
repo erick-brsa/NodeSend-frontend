@@ -4,6 +4,7 @@ import appContext from './appContext'
 import appReducer from './appReducer'
 
 import {
+    CLEAR_STATE,
     UPLOAD_FILE,
     UPLOAD_FILE_SUCCESS,
     UPLOAD_FILE_ERROR,
@@ -49,7 +50,6 @@ const AppProvider = ({ children }) => {
                 }
             })
         } catch (error) {
-            console.log(error);
             dispatch({
                 type: UPLOAD_FILE_ERROR,
                 payload: error.response.data.message
@@ -81,6 +81,14 @@ const AppProvider = ({ children }) => {
         }
     }
 
+    // Reiniciar el state
+    const restart_app = () => {
+        dispatch({
+            type: CLEAR_STATE,
+        })
+    }
+
+    // Mostrar alerta
     const showAlert = (message) => {
         dispatch({
             type: SHOW_ALERT,
@@ -106,6 +114,7 @@ const AppProvider = ({ children }) => {
                 url: state.url,
                 showAlert,
                 uploadFile,
+                restart_app,
                 createLink
             }}
         >

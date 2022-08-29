@@ -9,6 +9,7 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const SIGN_OUT = 'SIGN_OUT'
 
 // appContext
+export const CLEAR_STATE = 'CLEAR_STATE'
 export const UPLOAD_FILE = 'UPLOAD_FILE'
 
 export const UPLOAD_FILE_SUCCESS = 'UPLOAD_FILE_SUCCESS'
