@@ -1,46 +1,30 @@
 import React, { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import useApplication from '../hooks/useApplication'
-import axios from '../config/axios'
 
 const Dropzone = () => {
-    
-    // const [ image, setImage ] = useState(null)
 
-    const { showAlert } = useApplication()
+    const { uploadFile, createLink, showAlert, loading } = useApplication()
 
     const onDropRejected = () => {
         showAlert('No se pudo subir, el límite es 1MB, obten una cuenta gratis para subir archivos más grandes')
     }
 
-    const onDropAccepted = () => {
+    const onDropAccepted = useCallback(async (acceptedFiles) => {
+
         // Crear un form data
         const formData = new FormData()
         formData.append('file', acceptedFiles[0])
-        // setImage(URL.createObjectURL(acceptedFiles[0]))
-        // const { data } = await axios.post('/files', formData)
-        // console.log(data);
-    }
 
-    // const onDrop = useCallback(async (acceptedFiles) => {
-
-        // Crear un form data
-        // const formData = new FormData()
-        // formData.append('file', acceptedFiles[0])
-
-        // setImage(URL.createObjectURL(acceptedFiles[0]))
-        // const { data } = await axios.post('/files', formData)
-        // console.log(data);
-    // }, [])
-
+        uploadFile(formData, acceptedFiles[0].path)
+    }, [])
     
     const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({ onDropAccepted, onDropRejected, maxSize: 1000000 })
 
     const files = acceptedFiles.map(file => (
             <li key={file.lastModified} className="bg-white flex-1 p-3 mb-4 shadow-lg rounded">
-              <img src={image} />
                 <p className="font-bold text-xl">{file.path}</p>
-                <p className="font-sm text-gray-500">{(file.size / Math.pow(1024, 2).toFixed(2))} MB</p>
+                <p className="text-sm text-gray-400">{(file.size / Math.pow(1024, 2)).toFixed(2)} MB</p>
             </li>
         ) 
     )
@@ -53,11 +37,14 @@ const Dropzone = () => {
                     <ul className="text-2xl font-bold text-center mb-4">
                         {files}
                     </ul>
-                    <button
-                        type="button"
-                        className="bg-blue-500 w-full rounded text-white my-10 hover:bg-blue-700 p-2"
-                        onClick={() => createLink()}
-                    >Crear enlace</button>
+
+                    {loading ? <p className="my-10 text-center text-gray-400">Subiendo archivo...</p> : (
+                        <button
+                            type="button"
+                            className="bg-blue-500 w-full rounded text-white my-10 hover:bg-blue-700 p-2"
+                            onClick={() => createLink()}
+                        >Crear enlace</button>
+                    )}
                 </div>
             ) : (
                 <div {...getRootProps({ className: "dropzone w-full py-32"})}>

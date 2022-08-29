@@ -1,25 +1,49 @@
 import {
+    UPLOAD_FILE,
     UPLOAD_FILE_SUCCESS,
     UPLOAD_FILE_ERROR,
     CREATE_LINK_SUCCESS,
     CREATE_LINK_ERROR,
     SHOW_ALERT,
-    CLEAR_ALERT
+    HIDE_ALERT
 } from '../../types'
 
 const appReducer = (state, action) => {
     switch(action.type) {
+        case UPLOAD_FILE:
+            return {
+                ...state,
+                loading: true
+            }
         case UPLOAD_FILE_SUCCESS:
-        case UPLOAD_FILE_ERROR:
+            return {
+                ...state,
+                name: action.payload.name,
+                original_name: action.payload.original_name,
+                loading: false
+            }    
+        case UPLOAD_FILE_ERROR: 
+            return {
+                ...state,
+                message_file: action.payload,
+                loading: false
+            } 
         case CREATE_LINK_SUCCESS:
-        case CREATE_LINK_ERROR:
-            return
+            return {
+                ...state,
+                url: action.payload
+            }
+        case CREATE_LINK_ERROR: {
+            return {
+                ...state
+            }
+        }
         case SHOW_ALERT:
             return {
                 ...state,
                 message_file: action.payload
             }
-        case CLEAR_ALERT:
+        case HIDE_ALERT:
             return {
                 ...state,
                 message_file: null
