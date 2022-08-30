@@ -10,6 +10,8 @@ import {
     UPLOAD_FILE_ERROR,
     CREATE_LINK_SUCCESS,
     CREATE_LINK_ERROR,
+    ADD_PASSWORD,
+    ADD_DOWNLOADS,
     SHOW_ALERT,
     HIDE_ALERT
 } from '../../types'
@@ -62,6 +64,7 @@ const AppProvider = ({ children }) => {
         const data = {
             name: state.name,
             original_name: state.original_name,
+            password: state.password,
             downloads: state.downloads,
             author: state.author
         }
@@ -85,6 +88,22 @@ const AppProvider = ({ children }) => {
     const restart_app = () => {
         dispatch({
             type: CLEAR_STATE,
+        })
+    }
+
+    // Agregar el password 
+    const addPassword = (password) => {
+        dispatch({
+            type: ADD_PASSWORD,
+            payload: password
+        })
+    }
+
+    // Agrega un número de descargas
+    const addDownloads = (downloads) => {
+        dispatch({
+            type: ADD_DOWNLOADS,
+            payload: downloads
         })
     }
 
@@ -115,6 +134,8 @@ const AppProvider = ({ children }) => {
                 showAlert,
                 uploadFile,
                 restart_app,
+                addPassword,
+                addDownloads,
                 createLink
             }}
         >

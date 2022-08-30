@@ -4,6 +4,7 @@ import authReducer from './authReducer'
 
 import { 
     USER_AUTHENTICADED, 
+    USER_UNAUTHENTICADED,
     SUCCESSFUL_REGISTRATION,
     ERROR_REGISTRATION,
     CLEAR_ALERT,
@@ -38,12 +39,19 @@ const AuthProvider = ({ children }) => {
 
         try {
             const { data } = await axios('/auth')
-            dispatch({
-                type: USER_AUTHENTICADED,
-                payload: data.user
-            })
+
+            console.log(data)
+
+            if (data.user) {
+                dispatch({
+                    type: USER_AUTHENTICADED,
+                    payload: data.user
+                })
+            }
         } catch (error) {
-            console.log(error)
+            dispatch({
+                type: USER_UNAUTHENTICADED
+            })
         }
     }
 

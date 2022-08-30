@@ -14,9 +14,12 @@ const IndexPage = () => {
 	const { message_file, url } = useApplication()
 
 	useEffect(() => {
-		userAuthenticated()
+		const token = localStorage.getItem('token')
+		if (token) {
+			userAuthenticated()
+		}
 	}, [])
-
+	
 	return (
 		<Layout
 			title="NodeSend"

@@ -1,5 +1,6 @@
 import { 
     USER_AUTHENTICADED, 
+    USER_UNAUTHENTICADED,
     SUCCESSFUL_REGISTRATION, 
     ERROR_REGISTRATION,
     LOGIN_ERROR,
@@ -30,14 +31,20 @@ const authReducer = (state, action) => {
                 ...state,
                 user: action.payload,
                 authenticated: true
-            } 
+            }
+        case USER_UNAUTHENTICADED:
+            return {
+                ...state,
+                user: null,
+                authenticated: false
+            }
         case SIGN_OUT: 
             localStorage.removeItem('token')
             return {
                 ...state,
                 token: null,
                 user: null,
-                authenticated: null
+                authenticated: false
             }
         case CLEAR_ALERT:
             return {

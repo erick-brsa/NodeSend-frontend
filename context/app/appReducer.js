@@ -1,3 +1,4 @@
+import useApplication from '../../hooks/useApplication'
 import {
     CLEAR_STATE,
     UPLOAD_FILE,
@@ -5,6 +6,8 @@ import {
     UPLOAD_FILE_ERROR,
     CREATE_LINK_SUCCESS,
     CREATE_LINK_ERROR,
+    ADD_PASSWORD,
+    ADD_DOWNLOADS,
     SHOW_ALERT,
     HIDE_ALERT
 } from '../../types'
@@ -50,6 +53,18 @@ const appReducer = (state, action) => {
             return {
                 ...state,
                 message_file: action.payload
+            }
+        }
+        case ADD_PASSWORD: {
+            return {
+                ...state,
+                password: action.payload
+            }
+        }
+        case ADD_DOWNLOADS: {
+            return {
+                ...state,
+                downloads: action.payload
             }
         }
         case SHOW_ALERT:

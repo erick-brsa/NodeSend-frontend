@@ -1,9 +1,14 @@
-import React, { useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
+
+import useAuth from '../hooks/useAuth'
 import useApplication from '../hooks/useApplication'
+
+import Form from './Form'
 
 const Dropzone = () => {
 
+    const { user, authenticaded } = useAuth()
     const { uploadFile, createLink, showAlert, loading } = useApplication()
 
     const onDropRejected = () => {
@@ -37,6 +42,8 @@ const Dropzone = () => {
                     <ul className="text-2xl font-bold text-center mb-4">
                         {files}
                     </ul>
+
+                    {user && <Form />}
 
                     {loading ? <p className="my-10 text-center text-gray-400">Subiendo archivo...</p> : (
                         <button
